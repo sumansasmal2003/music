@@ -1,101 +1,127 @@
-import Image from "next/image";
+"use client";
+import { motion } from "framer-motion";
+import React from "react";
+import { useInView } from "react-intersection-observer";
+import { AiOutlinePlus } from "react-icons/ai";
+import Link from "next/link";
 
-export default function Home() {
+const HomePage: React.FC = () => {
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="bg-black text-white min-h-screen">
+      {/* Navbar */}
+      <header className="fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 bg-black shadow-lg z-50">
+        <h1 className="text-2xl font-bold text-white">MusicVerse</h1>
+        <nav className="hidden md:flex gap-6">
+          <a href="#" className="hover:text-gray-400 transition duration-300">
+            Home
+          </a>
+          <Link href="explore" className="hover:text-gray-400 transition duration-300">
+            Explore
+          </Link>
+          <a href="#" className="hover:text-gray-400 transition duration-300">
+            About
+          </a>
+        </nav>
+        <button className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 transition duration-300">
+          Login
+        </button>
+      </header>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      {/* Hero Section */}
+      <section className="relative flex flex-col items-center justify-center text-center h-screen px-4">
+        <motion.h2
+          className="text-4xl md:text-6xl font-extrabold mb-4"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+        >
+          Feel the Rhythm
+        </motion.h2>
+        <motion.p
+          className="text-md md:text-lg text-gray-400 mb-8"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.5 }}
+        >
+          Discover your favorite music and explore the top charts worldwide.
+        </motion.p>
+        <Link
+            href="/explore"
+        >
+            <motion.button
+            className="bg-white text-black px-6 py-3 text-lg rounded hover:bg-gray-200 transition duration-300"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 1 }}
+            >
+            Explore Now
+            </motion.button>
+        </Link>
+      </section>
+
+      {/* Features Section */}
+      <section
+        ref={ref}
+        className={`py-16 px-6 bg-black ${
+          inView ? "animate-fade-in-up" : "opacity-0"
+        }`}
+      >
+        <h3 className="text-3xl md:text-4xl font-bold text-center mb-12">
+          Features
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          <motion.div
+            className="p-6 bg-gray-900 rounded-lg shadow-lg text-center"
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <h4 className="text-xl font-semibold mb-2">Discover</h4>
+            <p className="text-gray-400">
+              Explore trending songs, albums, and playlists.
+            </p>
+          </motion.div>
+          <motion.div
+            className="p-6 bg-gray-900 rounded-lg shadow-lg text-center"
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Read our docs
-          </a>
+            <h4 className="text-xl font-semibold mb-2">Listen Anywhere</h4>
+            <p className="text-gray-400">
+              Stream music on your favorite devices seamlessly.
+            </p>
+          </motion.div>
+          <motion.div
+            className="p-6 bg-gray-900 rounded-lg shadow-lg text-center"
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <h4 className="text-xl font-semibold mb-2">Create Playlists</h4>
+            <p className="text-gray-400">
+              Save your favorites and create custom playlists.
+            </p>
+          </motion.div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 py-6 text-center text-gray-200">
+        <p>© 2024 MusicVerse. All rights reserved.</p>
       </footer>
+
+      {/* Floating Action Button */}
+      <Link href="/uploadMusic"
+        className="fixed bottom-6 right-6 bg-zinc-800 text-white p-2 rounded-full shadow-lg transition duration-300 z-50 hover:animate-bounce"
+        aria-label="Add"
+      >
+        <AiOutlinePlus size={24} />
+      </Link>
     </div>
   );
-}
+};
+
+export default HomePage;
