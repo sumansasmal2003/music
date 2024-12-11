@@ -5,6 +5,7 @@ import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import '../app/globals.css'
+import Link from "next/link";
 
 const Login: React.FC = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -96,12 +97,12 @@ const Login: React.FC = () => {
         </button>
         <p className="text-center text-gray-400 mt-6">
           Don&apos;t have an account?{" "}
-          <a
+          <Link
             href="/register"
             className="text-blue-400 hover:underline hover:text-blue-500"
           >
             Register
-          </a>
+          </Link>
         </p>
       </div>
     </div>
