@@ -3,7 +3,8 @@ import Image from "next/image";
 import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 import { MdOutlineForward10, MdOutlineReplay10 } from "react-icons/md";
 
-// Interface for the MusicCard props
+import '../app/globals.css'
+
 interface MusicCardProps {
   musicName: string;
   artistName: string;
@@ -15,17 +16,15 @@ interface MusicCardProps {
 const MusicCard: React.FC<MusicCardProps> = ({
   musicName,
   artistName,
-  duration,
   albumImageUrl,
   musicFileUrl,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0); // Current time in seconds
-  const [audioDuration, setAudioDuration] = useState(0); // Total duration of the audio
+  const [currentTime, setCurrentTime] = useState(0);
+  const [audioDuration, setAudioDuration] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Format the timestamp in mm:ss format
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
@@ -34,7 +33,7 @@ const MusicCard: React.FC<MusicCardProps> = ({
 
   useEffect(() => {
     if (audioRef.current) {
-      setAudioDuration(audioRef.current.duration); // Set the total audio duration
+      setAudioDuration(audioRef.current.duration);
     }
   }, [audioRef.current?.duration]);
 
@@ -52,15 +51,15 @@ const MusicCard: React.FC<MusicCardProps> = ({
 
   const handleTimeUpdate = () => {
     if (audioRef.current) {
-      setCurrentTime(audioRef.current.currentTime); // Update current time
-      setProgress((audioRef.current.currentTime / audioRef.current.duration) * 100); // Update progress bar
+      setCurrentTime(audioRef.current.currentTime);
+      setProgress((audioRef.current.currentTime / audioRef.current.duration) * 100);
     }
   };
 
   const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (audioRef.current) {
       const newTime = (parseFloat(e.target.value) / 100) * audioDuration;
-      audioRef.current.currentTime = newTime; // Set new time
+      audioRef.current.currentTime = newTime;
       setCurrentTime(newTime);
       setProgress(parseFloat(e.target.value));
     }
@@ -69,91 +68,82 @@ const MusicCard: React.FC<MusicCardProps> = ({
   const handleSkip = (seconds: number) => {
     if (audioRef.current) {
       const newTime = audioRef.current.currentTime + seconds;
-      audioRef.current.currentTime = Math.min(newTime, audioDuration); // Skip forward (limit to duration)
+      audioRef.current.currentTime = Math.min(newTime, audioDuration);
       setCurrentTime(newTime);
-      setProgress((newTime / audioDuration) * 100); // Update progress bar
+      setProgress((newTime / audioDuration) * 100);
     }
   };
 
   return (
-    <div
-      className={`${
-        isPlaying
-          ? "animate-border-multicolor" // Apply animation when playing
-          : "border border-gray-700"
-      } bg-zinc-900 rounded-lg p-4 shadow-lg flex flex-col items-center transition duration-300`}
-    >
+    <div className="flex flex-col sm:flex-row items-center bg-zinc-900 rounded-lg p-6 w-full shadow-lg space-y-6 sm:space-y-0 sm:space-x-6">
       {/* Album Image */}
-      <div className="w-full h-48 overflow-hidden rounded-md mb-4">
-        <Image
-          src={albumImageUrl}
-          alt={`${musicName} Album Cover`}
-          width={700}
-          height={700}
-          className="w-full h-full object-cover"
-        />
-      </div>
-
-      {/* Music Info */}
-      <div className="text-center">
-        <h3 className="text-xl font-bold text-white">{musicName}</h3>
-        <p className="text-gray-400">{artistName}</p>
-        <p className="text-gray-500">{duration}</p>
-      </div>
-
-      {/* Progress Bar with Timestamp */}
-      <div className="w-full mt-2">
-        <div className="flex justify-between text-xs text-gray-400">
-          <span>{formatTime(currentTime)}</span>
-          <span>{formatTime(audioDuration)}</span>
+      <div className="flex-shrink-0">
+        <div
+          className={`relative p-2 w-32 h-32 rounded-full bg-gray-800 border-4 border-gray-600 shadow-lg ${
+            isPlaying ? "animate-spin-slow" : ""
+          }`}
+        >
+          <Image
+            src={albumImageUrl}
+            alt={`${musicName} Album Cover`}
+            width={700}
+            height={700}
+            className="w-full h-full rounded-full object-cover"
+          />
         </div>
-        <input
-          aria-label="progressbar"
-          type="range"
-          value={progress}
-          onChange={handleProgressChange}
-          max="100"
-          className="w-full bg-gray-700 appearance-none rounded-lg h-2"
-          style={{
-            background: `linear-gradient(to right, #1DB954 ${progress}%, #444 ${progress}%)`,
-          }}
-        />
+      </div>
+
+      {/* Music Info and Progress */}
+      <div className="flex-1 w-full">
+        <div className="text-left">
+          <h3 className="text-2xl font-bold text-white">{musicName}</h3>
+          <p className="text-gray-400">Artist: {artistName}</p>
+        </div>
+        <div className="mt-4 w-full flex flex-col">
+          <div className="flex items-center justify-between text-xs text-gray-400 mb-2">
+            <span>{formatTime(currentTime)}</span>
+            <span>{formatTime(audioDuration)}</span>
+          </div>
+          <input
+            aria-label="progressbar"
+            type="range"
+            value={progress}
+            onChange={handleProgressChange}
+            max="100"
+            className="w-full appearance-none rounded-lg h-2"
+            style={{
+              background: `linear-gradient(to right, #1DB954 ${progress}%, #444 ${progress}%)`,
+            }}
+          />
+        </div>
       </div>
 
       {/* Controls */}
-      <div className="mt-4 flex items-center gap-4">
-        {/* Skip 10 seconds backward */}
-        {isPlaying && (
+      <div className="flex items-center gap-4">
         <button
-          title="Skip"
+          title="Skip backward 10 seconds"
           onClick={() => handleSkip(-10)}
-          className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-300"
+          className="text-white p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition duration-300"
         >
           <MdOutlineReplay10 className="text-2xl" />
         </button>
-        )}
-
-        {/* Play/Pause Button */}
         <button
           onClick={handlePlayPause}
-          className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-300"
+          className="text-white p-4 rounded-full bg-gray-800 hover:bg-gray-700 transition duration-300"
         >
           {isPlaying ? (
-            <FaPauseCircle className="text-2xl" />
+            <FaPauseCircle className="text-3xl" />
           ) : (
-            <FaPlayCircle className="text-2xl" />
+            <FaPlayCircle className="text-3xl" />
           )}
         </button>
-        {/* Skip 10 seconds forward */}
-          {isPlaying && (
         <button
-            title="skip"
+          title="Skip forward 10 seconds"
           onClick={() => handleSkip(10)}
-          className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-300"
+          className="text-white p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition duration-300"
         >
           <MdOutlineForward10 className="text-2xl" />
         </button>
-        )}
       </div>
 
       {/* Audio Element */}

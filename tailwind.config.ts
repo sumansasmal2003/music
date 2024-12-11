@@ -13,6 +13,9 @@ export default {
         secondary: "#121212", // Dark background
         accent: "#282828", // Card and section background
       },
+      animation: {
+        'spin-slow': 'spin 5s linear infinite',
+      }
     },
   },
   plugins: [],

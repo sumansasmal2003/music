@@ -55,7 +55,7 @@ const UploadMusic: React.FC = () => {
 
   return (
     <div className="bg-black text-white min-h-screen flex items-center justify-center p-6">
-      <div className="w-full max-w-lg bg-gray-900 rounded-lg shadow-lg p-8">
+      <div className="w-full max-w-3xl bg-zinc-900 rounded-lg shadow-xl p-8">
         <h1 className="text-3xl font-bold mb-6 text-center text-white animate-fade-in">
           Upload Music
         </h1>
@@ -151,8 +151,8 @@ const UploadMusic: React.FC = () => {
             type="submit"
             className={`w-full py-3 text-lg font-semibold rounded ${
               isUploading
-                ? "bg-gray-500 cursor-not-allowed"
-                : "bg-gray-800 hover:bg-gray-700 transition duration-300"
+                ? "bg-zinc-500 cursor-not-allowed"
+                : "bg-zinc-800 hover:bg-zinc-700 transition duration-300"
             }`}
             disabled={isUploading}
           >

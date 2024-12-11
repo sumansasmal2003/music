@@ -11,22 +11,15 @@ const HomePage: React.FC = () => {
   return (
     <div className="bg-black text-white min-h-screen">
       {/* Navbar */}
-      <header className="fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 bg-black shadow-lg z-50">
+      <header className="fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 bg-zinc-950 shadow-lg z-50">
         <h1 className="text-2xl font-bold text-white">MusicVerse</h1>
-        <nav className="hidden md:flex gap-6">
-          <a href="#" className="hover:text-gray-400 transition duration-300">
-            Home
-          </a>
-          <Link href="explore" className="hover:text-gray-400 transition duration-300">
-            Explore
-          </Link>
-          <a href="#" className="hover:text-gray-400 transition duration-300">
-            About
-          </a>
-        </nav>
+        <Link
+            href="/login"
+        >
         <button className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 transition duration-300">
           Login
         </button>
+        </Link>
       </header>
 
       {/* Hero Section */}

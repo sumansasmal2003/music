@@ -58,10 +58,10 @@ const ExplorePage: React.FC = () => {
   }, [searchQuery, musicList]);
 
   return (
-    <div className="bg-black text-white min-h-screen p-6">
+    <div className="bg-black text-white min-h-screen p-6 flex flex-col items-center justify-center w-full gap-3">
 
       {/* Search Bar */}
-      <div className="mb-6 flex justify-center">
+      <div className="mb-6 flex justify-center w-full">
         <input
           type="text"
           className="p-3 bg-zinc-800 outline-none text-white border border-gray-700 rounded-lg w-full md:w-1/2"
@@ -72,7 +72,7 @@ const ExplorePage: React.FC = () => {
       </div>
 
       {/* Display music cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="flex flex-col items-center justify-center gap-3 w-full max-w-5xl">
         {filteredMusicList.length > 0 ? (
           filteredMusicList.map((music) => (
             <MusicCard
