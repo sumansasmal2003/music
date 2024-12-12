@@ -4,21 +4,31 @@ import React from "react";
 import { useInView } from "react-intersection-observer";
 import { AiOutlinePlus } from "react-icons/ai";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { auth } from "../firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
 
 const HomePage: React.FC = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsLoggedIn(!!user); // Set user login state
+    });
+
+    return () => unsubscribe(); // Cleanup on component unmount
+  }, []);
 
   return (
-    <div className="bg-black text-white min-h-screen">
+    <div className="bg-gradient-to-br from-zinc-800 via-black to-gray-800 text-white min-h-screen">
       {/* Navbar */}
       <header className="fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 bg-zinc-950 shadow-lg z-50">
         <h1 className="text-2xl font-bold text-white">MusicVerse</h1>
-        <Link
-            href="/login"
-        >
-        <button className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 transition duration-300">
-          Login
-        </button>
+        <Link href={isLoggedIn ? "/dashboard" : "/login"}>
+          <button className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 transition duration-300">
+            {isLoggedIn ? "Dashboard" : "Login"}
+          </button>
         </Link>
       </header>
 
@@ -57,7 +67,7 @@ const HomePage: React.FC = () => {
       {/* Features Section */}
       <section
         ref={ref}
-        className={`py-16 px-6 bg-black ${
+        className={`py-16 px-6 bg-gradient-to-br from-zinc-800 via-black to-gray-800 min-h-screen flex flex-col items-center justify-center ${
           inView ? "animate-fade-in-up" : "opacity-0"
         }`}
       >

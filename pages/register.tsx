@@ -95,7 +95,7 @@ const Register: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-800">
-      <div className="w-full max-w-lg bg-gray-800 text-white shadow-lg rounded-xl p-8">
+      <div className="w-full max-w-xl bg-gray-800 text-white shadow-lg rounded-xl p-8">
         <h2 className="text-4xl font-bold text-center mb-6">Create Account</h2>
         {error && (
           <p className="text-red-500 text-sm text-center mb-4">{error}</p>
@@ -105,7 +105,7 @@ const Register: React.FC = () => {
             type="text"
             name="name"
             placeholder="Name"
-            className="w-full px-4 py-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full px-4 py-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-1 focus:ring-green-500 focus:outline-none"
             value={form.name}
             onChange={handleInputChange}
           />
@@ -113,7 +113,7 @@ const Register: React.FC = () => {
             type="email"
             name="email"
             placeholder="Email"
-            className="w-full px-4 py-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full px-4 py-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-1 focus:ring-yellow-500 focus:outline-none"
             value={form.email}
             onChange={handleInputChange}
           />
@@ -121,7 +121,7 @@ const Register: React.FC = () => {
             type="password"
             name="password"
             placeholder="Password"
-            className="w-full px-4 py-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full px-4 py-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-1 focus:ring-rose-500 focus:outline-none"
             value={form.password}
             onChange={handleInputChange}
           />
@@ -129,7 +129,7 @@ const Register: React.FC = () => {
             type="password"
             name="confirmPassword"
             placeholder="Confirm Password"
-            className="w-full px-4 py-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full px-4 py-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-1 focus:ring-red-500 focus:outline-none"
             value={form.confirmPassword}
             onChange={handleInputChange}
           />

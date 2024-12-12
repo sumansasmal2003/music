@@ -1,16 +1,13 @@
-"use client";
+// ExplorePage.tsx
 import React, { useEffect, useState } from "react";
 import { db } from "@/firebaseConfig";
 import { ref, onValue } from "firebase/database";
 import MusicCard from "@/components/MusicCard";
-import '../app/globals.css';
 
-// Define the type for a single music item
 interface Music {
   id: string;
   musicName: string;
   artistName: string;
-  duration: string;
   albumImageUrl: string;
   musicFileUrl: string;
 }
@@ -30,13 +27,13 @@ const ExplorePage: React.FC = () => {
               id: key,
               musicName: data[key].musicName,
               artistName: data[key].artistName,
-              duration: data[key].duration,
               albumImageUrl: data[key].albumImageUrl,
               musicFileUrl: data[key].musicFileUrl,
+              totalLove: data[key].totalLove || 0,
             }))
           : [];
         setMusicList(musicArray);
-        setFilteredMusicList(musicArray);  // Initially show all music
+        setFilteredMusicList(musicArray); // Initially show all music
       });
     };
 
@@ -57,8 +54,9 @@ const ExplorePage: React.FC = () => {
     }
   }, [searchQuery, musicList]);
 
+
   return (
-    <div className="bg-black text-white min-h-screen p-6 flex flex-col items-center justify-center w-full gap-3">
+    <div className="bg-gradient-to-tr from-gray-800 via-black to-zinc-800 text-white min-h-screen p-6 flex flex-col items-center justify-center w-full gap-3">
 
       {/* Search Bar */}
       <div className="mb-6 flex justify-center w-full">
@@ -79,9 +77,9 @@ const ExplorePage: React.FC = () => {
               key={music.id}
               musicName={music.musicName}
               artistName={music.artistName}
-              duration={music.duration}
               albumImageUrl={music.albumImageUrl}
               musicFileUrl={music.musicFileUrl}
+              musicId={music.id}
             />
           ))
         ) : (

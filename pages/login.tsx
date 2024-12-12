@@ -1,16 +1,34 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { auth, provider } from "@/firebaseConfig";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  setPersistence,
+  browserLocalPersistence,
+  onAuthStateChanged,
+} from "firebase/auth";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import '../app/globals.css'
+import { useRouter } from "next/navigation";
+import "../app/globals.css";
 import Link from "next/link";
 
 const Login: React.FC = () => {
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const router = useRouter();
+
+  // Check if user is already logged in
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Redirect to dashboard if already logged in
+        router.push("/dashboard");
+      }
+    });
+    return () => unsubscribe();
+  }, [router]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -23,9 +41,11 @@ const Login: React.FC = () => {
       return;
     }
     try {
+      // Set persistence to 'local'
+      await setPersistence(auth, browserLocalPersistence);
       await signInWithEmailAndPassword(auth, email, password);
       alert("Login successful!");
-      router.push('/dashboard')
+      router.push("/dashboard");
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : "An unknown error occurred!";
@@ -35,9 +55,11 @@ const Login: React.FC = () => {
 
   const handleGoogleLogin = async () => {
     try {
+      // Set persistence to 'local'
+      await setPersistence(auth, browserLocalPersistence);
       await signInWithPopup(auth, provider);
       alert("Google login successful!");
-      router.push('/dashboard')
+      router.push("/dashboard");
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : "An unknown error occurred!";
@@ -47,7 +69,7 @@ const Login: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-800">
-      <div className="w-full max-w-lg bg-gray-800 shadow-lg rounded-xl p-8">
+      <div className="w-full max-w-xl bg-gray-800 shadow-lg rounded-xl p-8">
         <h2 className="text-4xl font-bold text-center text-white mb-8">
           Welcome Back
         </h2>
@@ -59,7 +81,7 @@ const Login: React.FC = () => {
             type="email"
             name="email"
             placeholder="Email"
-            className="w-full px-4 py-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full px-4 py-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-1 focus:ring-green-500 focus:outline-none"
             value={form.email}
             onChange={handleInputChange}
           />
@@ -67,7 +89,7 @@ const Login: React.FC = () => {
             type="password"
             name="password"
             placeholder="Password"
-            className="w-full px-4 py-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full px-4 py-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-1 focus:ring-rose-500 focus:outline-none"
             value={form.password}
             onChange={handleInputChange}
           />
